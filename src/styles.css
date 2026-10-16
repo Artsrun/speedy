@@ -1,0 +1,237 @@
+:root {
+  --bg: #0b0d10;
+  --panel: #12151a;
+  --panel-2: #181c22;
+  --line: #242a33;
+  --ink: #e8ebef;
+  --dim: #8a94a3;
+  --accent: #ffb84a;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; cursor: pointer; }
+
+.app { min-height: 100dvh; }
+
+/* ── header ───────────────────────────── */
+.bar {
+  padding: 28px clamp(16px, 4vw, 40px) 20px;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(600px 160px at 0% 0%, color-mix(in oklab, var(--accent) 14%, transparent), transparent),
+    var(--bg);
+}
+
+.brandline { display: flex; align-items: center; gap: 16px; }
+
+.logo {
+  margin: 0;
+  font: 800 clamp(34px, 7vw, 52px) / 1 var(--mono);
+  letter-spacing: -0.04em;
+  b { color: var(--accent); font-style: italic; }
+}
+
+.live {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  font: 600 11px var(--mono);
+  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #7dd956;
+  box-shadow: 0 0 8px #7dd956;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes pulse { 50% { opacity: 0.3; } }
+
+.cli {
+  margin: 14px 0 16px;
+  font: 13px var(--mono);
+  color: var(--dim);
+  overflow-wrap: anywhere;
+}
+
+.stats { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.stat {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: 12px var(--mono);
+  color: var(--dim);
+  b { color: var(--ink); font-weight: 600; }
+  .arrow { color: var(--dim); font-weight: 400; }
+}
+
+/* ── filters ──────────────────────────── */
+.filters {
+  position: sticky; top: 0; z-index: 2;
+  display: grid; gap: 8px;
+  padding: 12px clamp(16px, 4vw, 40px);
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.chips {
+  display: flex; gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip {
+  --c: var(--ink);
+  flex: none;
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  font: 600 12px var(--mono);
+  color: var(--dim);
+  transition: 150ms;
+  &:hover { border-color: var(--c); color: var(--ink); }
+  &[aria-pressed="true"] {
+    color: var(--bg);
+    background: var(--c);
+    border-color: var(--c);
+  }
+}
+
+/* ── grid + cards ─────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+  gap: 16px;
+  padding: 20px clamp(16px, 4vw, 40px) 40px;
+  align-items: start;
+}
+
+.card {
+  display: flex; flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  animation: rise 420ms both cubic-bezier(.2, .8, .2, 1);
+  animation-delay: calc(var(--i) * 60ms);
+}
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+.card-head {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  padding: 14px 16px 0;
+}
+
+.daywrap { display: grid; gap: 2px; }
+.day { font: 800 20px var(--mono); }
+.slot {
+  display: inline-flex; align-items: center; gap: 4px;
+  font: 11px var(--mono); color: var(--dim);
+  white-space: nowrap;
+}
+
+.headright { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+
+.pill {
+  --c: var(--dim);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font: 600 11px var(--mono);
+  color: var(--c);
+  background: color-mix(in oklab, var(--c) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--c) 35%, transparent);
+  white-space: nowrap;
+}
+
+.body {
+  position: relative;
+  padding: 12px 16px 4px;
+  &[data-open="false"] {
+    max-height: 340px;
+    overflow: hidden;
+    mask-image: linear-gradient(#000 70%, transparent);
+  }
+  p { margin: 0 0 12px; }
+}
+
+.hook { font-weight: 600; font-size: 17px; line-height: 1.35; }
+.text { white-space: pre-line; color: color-mix(in oklab, var(--ink) 86%, var(--dim)); }
+.cta { color: var(--accent); font-weight: 500; }
+.tags { font: 12px var(--mono); color: var(--dim); }
+
+.more {
+  margin: 0 16px 8px;
+  padding: 0;
+  background: none; border: 0;
+  font: 600 12px var(--mono);
+  color: var(--accent);
+  align-self: flex-start;
+}
+
+.card-foot {
+  margin-top: auto;
+  display: grid; gap: 10px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.seeds { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.seedlabel { font: 11px var(--mono); color: var(--dim); margin-right: 2px; }
+.seed {
+  padding: 1px 7px;
+  border: 1px dashed var(--line);
+  border-radius: 5px;
+  font: 11px var(--mono); color: var(--dim);
+}
+
+.actions { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+
+.act {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 40px; /* iOS tap target */
+  padding: 0 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  font: 600 12px var(--mono);
+  transition: 150ms;
+  &:hover, &:focus-visible { border-color: var(--accent); }
+  &:active { transform: scale(0.97); }
+  &.li { border-color: color-mix(in oklab, #4ac0ff 45%, var(--line)); }
+  &[data-on="true"] { color: #7dd956; border-color: #7dd956; }
+}
+
+.empty { color: var(--dim); font-family: var(--mono); }
+
+.foot {
+  padding: 0 clamp(16px, 4vw, 40px) calc(32px + env(safe-area-inset-bottom));
+  font: 12px var(--mono);
+  color: var(--dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .dot { animation: none; }
+}
