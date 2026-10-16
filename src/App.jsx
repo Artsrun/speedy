@@ -20,7 +20,7 @@ export const App = () => {
   );
 
   const words = useMemo(() => POSTS.reduce((n, p) => n + wordCount(toText(p)), 0), []);
-  const modelLog = [...new Set(POSTS.map((p) => p.model))];
+  const modelLog = Object.keys(MODELS).filter((m) => POSTS.some((p) => p.model === m));
 
   const formatChips = [
     { id: ALL, label: "All" },

@@ -6,15 +6,19 @@ import {
   copyText,
   linkedInLinks,
   openWithFallback,
+  shareNative,
   toText,
   xLinks,
 } from "../lib/share.js";
+import { MediaGrid } from "./MediaGrid.jsx";
+import { Slideshow } from "./Slideshow.jsx";
 
 const LONG = 900; // chars before the body clamps
 
 export const Card = ({ post, index }) => {
   const [flash, setFlash] = useState(null);
   const [open, setOpen] = useState(post.body.length < LONG);
+  const [slide, setSlide] = useState(null);
   const text = toText(post);
   const fmt = FORMATS[post.format];
   const mdl = MODELS[post.model];
@@ -30,11 +34,11 @@ export const Card = ({ post, index }) => {
     openWithFallback(linkedInLinks());
   };
 
-  const onX = () => openWithFallback(xLinks(text));
+  const onX = () => openWithFallback(xLinks(post.xText ?? text));
 
   const onShare = async () => {
     try {
-      await navigator.share({ text });
+      await shareNative(post, text);
     } catch {
       /* user dismissed the sheet */
     }
@@ -43,7 +47,7 @@ export const Card = ({ post, index }) => {
   const onCopy = async () => (await copyText(text)) && ping("copy");
 
   return (
-    <article className="card" style={{ "--i": index }} data-testid={`post-${post.id}`}>
+    <article className="card" data-media={!!post.media} style={{ "--i": index }} data-testid={`post-${post.id}`}>
       <header className="card-head">
         <div className="daywrap">
           <span className="day">{post.day}</span>
@@ -61,10 +65,18 @@ export const Card = ({ post, index }) => {
         </div>
       </header>
 
+      {post.media && <MediaGrid media={post.media} pick={post.grid} onOpen={setSlide} />}
+      {slide !== null && <Slideshow media={post.media} start={slide} onClose={() => setSlide(null)} />}
+
       <div className="body" data-open={open}>
         <p className="hook">{post.hook}</p>
         <p className="text">{post.body}</p>
         <p className="cta">{post.cta}</p>
+        {post.link && (
+          <a className="link" href={post.link} target="_blank" rel="noopener noreferrer">
+            {post.link.replace(/^https?:\/\//, "")}
+          </a>
+        )}
         <p className="tags">{post.tags.join("  ")}</p>
       </div>
       {!open && (
@@ -94,7 +106,7 @@ export const Card = ({ post, index }) => {
           {canNativeShare() && (
             <button type="button" className="act" onClick={onShare} aria-label="Share sheet">
               <Share2 size={14} />
-              <span>Share</span>
+              <span>{post.media ? `Share +${Math.min(post.media.length, 20)}` : "Share"}</span>
             </button>
           )}
           <button type="button" className="act" onClick={onCopy} data-on={flash === "copy"} aria-label="Copy post">

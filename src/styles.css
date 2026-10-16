@@ -224,7 +224,156 @@ button { font: inherit; color: inherit; cursor: pointer; }
   &[data-on="true"] { color: #7dd956; border-color: #7dd956; }
 }
 
+.link {
+  display: block;
+  margin: 0 0 12px;
+  font: 12px var(--mono);
+  color: #4ac0ff;
+  overflow-wrap: anywhere;
+}
+
 .empty { color: var(--dim); font-family: var(--mono); }
+
+/* ── media post: wide card + mosaic ───── */
+@media (min-width: 860px) {
+  .card[data-media="true"] { grid-column: span 2; }
+}
+
+.mosaic {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  margin: 12px 16px 0;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+
+.tile {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: #000;
+  overflow: hidden;
+  &:first-child { grid-row: span 2; }
+  img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 400ms cubic-bezier(.2, .8, .2, 1), filter 300ms;
+    filter: brightness(1.15);
+  }
+  &:hover img { transform: scale(1.06); filter: brightness(1.35); }
+}
+
+.plus {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  background: color-mix(in oklab, #000 55%, transparent);
+  font: 800 22px var(--mono);
+}
+
+.mosaic-play {
+  position: absolute; left: 8px; bottom: 8px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in oklab, #fff 25%, transparent);
+  border-radius: 99px;
+  background: color-mix(in oklab, #000 60%, transparent);
+  backdrop-filter: blur(6px);
+  font: 600 11px var(--mono);
+}
+
+/* ── slideshow ────────────────────────── */
+.show {
+  width: min(100vw, 1100px);
+  max-width: none;
+  max-height: 100dvh;
+  padding: 0;
+  border: 0;
+  background: #000;
+  color: var(--ink);
+  overflow: hidden;
+  &::backdrop { background: color-mix(in oklab, #000 88%, transparent); backdrop-filter: blur(8px); }
+  &[open] { animation: zoom 260ms cubic-bezier(.2, .8, .2, 1); }
+}
+
+@keyframes zoom { from { opacity: 0; transform: scale(0.96); } }
+
+.show-bars {
+  position: absolute; top: 10px; left: 12px; right: 52px; z-index: 2;
+  display: flex; gap: 3px;
+}
+
+.bar-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklab, #fff 22%, transparent);
+  overflow: hidden;
+  &[data-state="done"] { background: #fff; }
+  i {
+    display: block; height: 100%;
+    background: var(--accent);
+    animation: fill var(--dur) linear forwards;
+    &[data-playing="false"] { animation-play-state: paused; }
+  }
+}
+
+@keyframes fill { from { width: 0; } to { width: 100%; } }
+
+.show-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior: contain;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.slide {
+  flex: 0 0 100%;
+  margin: 0;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  position: relative;
+  img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    display: block;
+    filter: brightness(1.2);
+  }
+  figcaption {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 12px 16px 64px;
+    min-height: 3.5em;
+    font: 500 15px/1.4 var(--sans);
+  }
+  &[aria-hidden="false"] figcaption { animation: rise 500ms both; }
+}
+
+.count { flex: none; font: 600 11px var(--mono); color: var(--accent); }
+
+.show-ctrl {
+  position: absolute; bottom: 14px; left: 50%; translate: -50% 0;
+  display: flex; gap: 8px;
+}
+
+.show-ctrl button, .show-close {
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  border: 1px solid color-mix(in oklab, #fff 20%, transparent);
+  border-radius: 50%;
+  background: color-mix(in oklab, #000 50%, transparent);
+  backdrop-filter: blur(6px);
+  &:hover, &:focus-visible { border-color: var(--accent); }
+}
+
+.show-close { position: absolute; top: 4px; right: 6px; z-index: 2; width: 36px; height: 36px; }
 
 .foot {
   padding: 0 clamp(16px, 4vw, 40px) calc(32px + env(safe-area-inset-bottom));

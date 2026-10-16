@@ -6,6 +6,7 @@ export const SEED_SOURCES = ["Drive", "GitHub", "StackEx", "X", "Grok"];
 export const MODELS = {
   "opus-4.8": { label: "Opus 4.8", tint: "#8b7cff" },
   "opus-5": { label: "Opus 5", tint: "#ffb84a" },
+  "opus-5.5": { label: "Opus 5.5", tint: "#4ae0c0" },
 };
 
 export const FORMATS = {
@@ -13,9 +14,66 @@ export const FORMATS = {
   story: { label: "Story / anecdote", color: "#4ac0ff" },
   reframe: { label: "Hook → reframe → takeaway", color: "#7dd956" },
   confessional: { label: "Confessional / meta", color: "#ff4a9e" },
+  news: { label: "News / slideshow", color: "#4ae0c0" },
 };
 
+const roadster = (n, caption) => ({
+  src: `posts/roadster/${String(n).padStart(2, "0")}.webp`,
+  caption,
+});
+
 export const POSTS = [
+  {
+    id: 10,
+    day: "Oct 16",
+    model: "opus-5.5",
+    format: "news",
+    seeds: ["YouTube", "Grok", "Live"],
+    hook: "Tesla Roadster just flew, drove upside down, and did 0–60 in 0.81s.",
+    body: `Suction fans + SpaceX cold-gas thrusters. Production 2028.
+
+What Tesla showed in Texas last night:
+
+→ Fans underneath pull up to 2G of downforce — enough to hold the car upside down while stationary.
+→ It drove up a vertical ramp and across the top, inverted.
+→ Ten cold-gas thrusters for short flight, flips and a barrel roll over the rest of the lineup.
+→ No rocket fuel: two ~600 L tanks of high-pressure air that recompress while it drives.
+→ 0–60 in 0.81s, claimed — Tesla calls it the quickest production car to 60.
+
+Trims: Performance ($50k deposit) · Thrust ($250k, the sub-1s one) · Rocket (single seat, invite-only, the flying one).
+
+It's a concept, flight isn't street-legal yet, and this car was first promised in 2017.
+
+The line I keep thinking about: Musk says long-term it'll be the only Tesla you still drive yourself.
+
+The last manual skill just got a jetpack. 🧘`,
+    cta: "Would you keep driving manually if this were the only way to do it?",
+    tags: ["#Tesla", "#SpaceX", "#Engineering", "#FutureOfMobility"],
+    link: "https://youtu.be/eqOfmtTJD1A",
+    xText: "Tesla Roadster just flew, drove upside down, and did 0–60 in 0.81s (claimed).\nSuction + SpaceX cold-gas thrusters. Production 2028.\nhttps://youtu.be/eqOfmtTJD1A",
+    grid: [15, 2, 7, 10, 12], // hero + 2×2 (0-based media indices)
+    media: [
+      roadster(1, "Dusk, Texas. One pair of headlights on the horizon."),
+      roadster(2, "Second-generation Roadster — first shown in 2017."),
+      roadster(3, "The reveal. Concept, not production spec."),
+      roadster(4, "ROADSTER — Tesla × SpaceX."),
+      roadster(5, "X-ray view: the chassis under the shell."),
+      roadster(6, "Cold-gas thrusters: compressed air, no rocket fuel."),
+      roadster(7, "Two ~600 L high-pressure tanks, recompressed while driving."),
+      roadster(8, "Launch. 0–60 in 0.81s, per Tesla."),
+      roadster(9, "Thrust trim ($250k) is the sub-1-second one."),
+      roadster(10, "Suction fans: up to 2G of downforce, even when stopped."),
+      roadster(11, "Up the vertical ramp — HUD reads 67.1 ft."),
+      roadster(12, "Off the top, thrusters firing."),
+      roadster(13, "Controlled landing at 2.7 G."),
+      roadster(14, "Night run, lineup waiting at the far end."),
+      roadster(15, "Lift-off over the lineup."),
+      roadster(16, "Barrel roll over the lineup."),
+      roadster(17, "Three trims: Performance · Thrust · Rocket."),
+      roadster(18, "Flight isn't street-legal yet."),
+      roadster(19, "Production 2028."),
+    ],
+  },
   {
     id: 1,
     day: "Mon",

@@ -9,6 +9,10 @@ describe("share", () => {
     expect(toText(post)).toBe("H\n\nB b\n\nC?\n\n#a #b");
   });
 
+  it("puts the link before tags when present", () => {
+    expect(toText({ ...post, link: "https://x.y" })).toBe("H\n\nB b\n\nC?\n\nhttps://x.y\n\n#a #b");
+  });
+
   it("counts words", () => {
     expect(wordCount("  one two\nthree ")).toBe(3);
   });
@@ -25,9 +29,15 @@ describe("share", () => {
 });
 
 describe("posts data", () => {
-  it("has 9 posts with unique ids", () => {
-    expect(POSTS).toHaveLength(9);
-    expect(new Set(POSTS.map((p) => p.id)).size).toBe(9);
+  it("has unique ids", () => {
+    expect(new Set(POSTS.map((p) => p.id)).size).toBe(POSTS.length);
+  });
+
+  it("media posts stay within the LinkedIn 20-image cap and have captions", () => {
+    POSTS.filter((p) => p.media).forEach((p) => {
+      expect(p.media.length).toBeLessThanOrEqual(20);
+      p.media.forEach((m) => expect(m.caption).toBeTruthy());
+    });
   });
 
   it("every post references a known format and model", () => {
