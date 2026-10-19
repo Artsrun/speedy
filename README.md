@@ -4,6 +4,12 @@ LinkedIn daily-post engine. Preview a batch, share from your phone, log which mo
 
 **Live:** https://artsrun.github.io/speedy/
 
+## Agent instructions
+
+Agent-agnostic prompt architecture lives in [`prompts/AGENT.md`](prompts/AGENT.md).
+
+Works with Claude, Grok, OpenCode, or any local model. Requires every post to carry a historical rhyme and a domain tag so batches stay balanced beyond pure tech topics.
+
 ## Batch 1
 
 Theme: *human fear of losing jobs to AI* · voice 🧘 · 9 posts
@@ -49,5 +55,6 @@ One-time: repo **Settings → Pages → Source: GitHub Actions**.
 ## Open
 
 - Live Drive / GitHub seeds (seed tags are provenance labels for now)
-- Batch 2
+- Batch 2 (use prompts/AGENT.md)
 - Engagement numbers per post → per-model comparison
+- Link from artsrun.github.io hub
